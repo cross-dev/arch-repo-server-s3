@@ -1,3 +1,14 @@
 #!/bin/bash
 
-BASE_COMMAND=
+die() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+[ -z "$S3_BUCKET" ] && die "S3_BUCKET environment variable must tell the name of the bucket"
+[ -z "$S3_ACCESS" ] && die "S3_ACCESS environment variable must tell S3 access key"
+[ -z "$S3_SECRET" ] && die "S3_ACCESS environment variable must tell S3 secret key"
+
+AWSACCESSKEYID="$S3_ACCESS" AWSSECRETACCESSKEY="$S3_SECRET" s3fs $S3_BUCKET /var/lib/repos -o umask=0022,allow_other,use_cache=/var/cache/s3fs,del_cache && \
+cd /var/lib/repos && \
+/go/src/github.com/cross-dev/arch-repo-server/bin/entrypoint
