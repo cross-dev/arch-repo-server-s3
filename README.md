@@ -23,7 +23,7 @@ command line:
 ```
 $ docker run -d \
     -p 8000:41268 \
-    --env-file=/etc/arch-repo-server.conf
+    --env-file=/etc/arch-repo-server.conf \
     --cap-add mknod --cap-add sys_admin --device=/dev/fuse \
     crossdev/arch-repo-server-s3
 ```
