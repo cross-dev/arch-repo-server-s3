@@ -4,6 +4,18 @@ This is a logical extension of the [cross-dev/arch-repo-server](https://github.c
 It embeds [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) application to provide S3 bucket access through a
 FUSE mountpoint.
 
+**NB!** It appears like a commodity kernel from Ubuntu 14.04 (e.g. 3.13.0) has some issues in the FUSE module,
+so mounting really does not work inside the container. It fails with the following message:
+
+```
+fuse: mount failed: Permission denied
+```
+
+Adding `--privileged` flag helps, but that is probably not what you would want to do. Not even `--cap-add all`.
+
+In the other machine, where it works, there is a kernel 4.0.5 and devicemapper storage driver in use. It is not
+evident what is the key part to fix it.
+
 ## Install
 
 Have Docker installed and run:
